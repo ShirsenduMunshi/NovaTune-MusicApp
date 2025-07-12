@@ -5,6 +5,7 @@ import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { useMusicPlayer } from "@/context/MusicPlayerContext";
 
 const trendingSongs = [
   {
@@ -12,65 +13,77 @@ const trendingSongs = [
     title: "Sahiba",
     artist: "Aditya Rikhari",
     banner: "/MusicBannerImage.jpg",
+    audio: "/sample.mp3",
   },
   {
     id: "saiyaara",
     title: "Saiyaara (From 'Saiyaara')",
     artist: "Tanishk Bagchi, Faheem Abdullah, Arslan Nizami",
     banner: "/MusicBannerImage.jpg",
+    audio: "/sample.mp3",
   },
   {
     id: "at-peace",
     title: "At Peace",
     artist: "Karan Aujla, Ikky",
     banner: "/MusicBannerImage.jpg",
+    audio: "/sample.mp3",
   },
   {
     id: "ehsaas",
     title: "Ehsaas",
     artist: "Faheem Abdullah, Duha Shah",
     banner: "/MusicBannerImage.jpg",
+    audio: "/sample.mp3",
   },
   {
     id: "blinding-lights",
     title: "Blinding Lights",
     artist: "The Weeknd",
     banner: "/MusicBannerImage.jpg",
+    audio: "/sample.mp3",
   },
   {
     id: "ranjha",
     title: "Ranjha",
     artist: "B Praak",
     banner: "/MusicBannerImage.jpg",
+    audio: "/sample.mp3",
   },
   {
     id: "qaafirana",
     title: "Qaafirana",
     artist: "Arijit Singh",
     banner: "/MusicBannerImage.jpg",
+    audio: "/sample.mp3",
   },
   {
     id: "closer",
     title: "Closer",
     artist: "The Chainsmokers",
     banner: "/MusicBannerImage.jpg",
+    audio: "/sample.mp3",
   },
   {
     id: "shape-of-you",
     title: "Shape of You",
     artist: "Ed Sheeran",
     banner: "/MusicBannerImage.jpg",
+    audio: "/sample.mp3",
   },
   {
     id: "let-me-love-you",
     title: "Let Me Love You",
     artist: "DJ Snake, Justin Bieber",
     banner: "/MusicBannerImage.jpg",
+    audio: "/sample.mp3",
   },
 ];
+
 export default function TrendingSongs() {
   const scrollRef = useRef(null);
   const router = useRouter();
+  const { setCurrentSong } = useMusicPlayer();
 
   const scroll = (direction) => {
     if (!scrollRef.current) return;
@@ -80,8 +93,17 @@ export default function TrendingSongs() {
     });
   };
 
-  const handleSongClick = (song) => {
-    localStorage.setItem("selectedSong", JSON.stringify(song));
+  const handlePlayClick = (e, song) => {
+    e.stopPropagation(); // ⛔ Stop navigation when Play button is clicked
+    setCurrentSong({
+      title: song.title,
+      artist: song.artist,
+      src: song.audio,
+      cover: song.banner,
+    });
+  };
+
+  const handleCardClick = (song) => {
     router.push(`/song/${song.id}`);
   };
 
@@ -116,7 +138,7 @@ export default function TrendingSongs() {
           {trendingSongs.map((song) => (
             <div
               key={song.id}
-              onClick={() => handleSongClick(song)}
+              onClick={() => handleCardClick(song)}
               className="cursor-pointer relative w-40 min-w-[160px] rounded-lg overflow-hidden bg-card shadow-md hover:scale-105 transition-transform duration-300"
             >
               <img
@@ -124,11 +146,20 @@ export default function TrendingSongs() {
                 alt={song.title}
                 className="w-full h-40 object-cover"
               />
-              <div className="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
-                <Button variant="secondary" size="icon">
+
+              {/* Hover Play Button */}
+              <div
+                className="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 flex items-center justify-center transition-opacity duration-300"
+              >
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  onClick={(e) => handlePlayClick(e, song)} // ⏯️ Play
+                >
                   <Play className="w-5 h-5" />
                 </Button>
               </div>
+
               <div className="p-2">
                 <h3 className="text-sm font-medium truncate">{song.title}</h3>
                 <p className="text-xs text-muted-foreground truncate">

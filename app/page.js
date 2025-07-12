@@ -48,18 +48,6 @@ export default function Home() {
           <PopularArtists />
         </section>
       </div>
-
-      {/* Music Player */}
-      <div className="sticky bottom-0 left-0 w-full bg-background border-t border-border p-4 flex justify-center z-50">
-        <MusicPlayer
-          song={{
-            title: "Test Track",
-            artist: "Test Artist",
-            src: "/dummy-audio.mp3", // Place this file in /public folder
-            cover: "/cover.jpg", // Place this image in /public/images
-          }}
-        />
-      </div>
     </main>
   );
 }

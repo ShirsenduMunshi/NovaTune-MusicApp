@@ -3,6 +3,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { MusicPlayerProvider } from "@/context/MusicPlayerContext";
+import MusicPlayer from "@/components/MusicPlayer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,13 +25,16 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <Navbar />
-          <main>
-            {children}
-          </main>
-          <Footer/>
-        </ThemeProvider>
+         <MusicPlayerProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <Navbar />
+            <main>
+              {children}
+              <MusicPlayer />
+            </main>
+            <Footer/>
+          </ThemeProvider>
+        </MusicPlayerProvider>
       </body>
     </html>
   );

@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Play } from "lucide-react";
+import { useMusicPlayer } from "@/context/MusicPlayerContext"; // 💡 make sure this is correctly setup
 
 const dummyPlaylists = [
   {
@@ -198,9 +201,11 @@ const dummyPlaylists = [
     id: "coding-focus",
   },
 ];
+
 export default function PlaylistsPage() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { setCurrentSong } = useMusicPlayer();
 
   useEffect(() => {
     const delay = setTimeout(() => setLoading(false), 1000);
@@ -212,8 +217,21 @@ export default function PlaylistsPage() {
     router.push(`/playlist/${playlist.id}`);
   };
 
+  const handlePlayClick = (e, playlist) => {
+    e.stopPropagation(); // ⛔ prevent navigation
+    const firstSong = playlist.songs[0];
+    if (!firstSong) return;
+    setCurrentSong({
+      title: firstSong.title,
+      artist: firstSong.artist,
+      src: "/sample.mp3", // 🔁 replace with actual audio URL if needed
+      cover: playlist.cover,
+    });
+  };
+
   return (
     <main className="min-h-screen max-w-7xl mx-auto px-4 py-8 space-y-6">
+      {/* Page header */}
       <motion.div
         initial={{ opacity: 0, y: -15 }}
         animate={{ opacity: 1, y: 0 }}
@@ -226,6 +244,7 @@ export default function PlaylistsPage() {
         </p>
       </motion.div>
 
+      {/* Loading state */}
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {Array.from({ length: 8 }).map((_, i) => (
@@ -258,17 +277,32 @@ export default function PlaylistsPage() {
             <div
               key={i}
               onClick={() => handleNavigate(playlist)}
-              className="cursor-pointer"
+              className="cursor-pointer group relative"
             >
               <motion.div
                 className="rounded-xl overflow-hidden border border-border bg-card shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300"
                 whileHover={{ y: -2 }}
               >
-                <img
-                  src={playlist.cover}
-                  alt={playlist.title}
-                  className="w-full h-40 object-cover"
-                />
+                <div className="relative">
+                  <img
+                    src={playlist.cover}
+                    alt={playlist.title}
+                    className="w-full h-40 object-cover"
+                  />
+
+                  {/* 🎯 Hover Play Button */}
+                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+                    <Button
+                      variant="secondary"
+                      size="icon"
+                      onClick={(e) => handlePlayClick(e, playlist)}
+                    >
+                      <Play className="w-5 h-5" />
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Playlist Info */}
                 <div className="p-4">
                   <h2 className="text-lg font-semibold truncate">
                     {playlist.title}
