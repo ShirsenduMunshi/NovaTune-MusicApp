@@ -7,14 +7,15 @@ import { Input } from "@/components/ui/input";
 import { PlayCircle } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const discoverCategories = [
-  { title: "Top Hindi", image: "/MusicBannerImage.jpg" },
-  { title: "Lo-Fi Chill", image: "/MusicBannerImage.jpg" },
-  { title: "Workout Boost", image: "/MusicBannerImage.jpg" },
-  { title: "Classical Fusion", image: "/MusicBannerImage.jpg" },
-  { title: "Pop Vibes", image: "/MusicBannerImage.jpg" },
-  { title: "Indie Gems", image: "/MusicBannerImage.jpg" },
+  { title: "Top Hindi", image: "/MusicBannerImage.jpg", id: "top-hindi" },
+  { title: "Lo-Fi Chill", image: "/MusicBannerImage.jpg", id: "lofi-chill" },
+  { title: "Workout Boost", image: "/MusicBannerImage.jpg", id: "workout-boost" },
+  { title: "Classical Fusion", image: "/MusicBannerImage.jpg", id: "classical-fusion" },
+  { title: "Pop Vibes", image: "/MusicBannerImage.jpg", id: "pop-vibes" },
+  { title: "Indie Gems", image: "/MusicBannerImage.jpg", id: "indie-gems" },
 ];
 
 export default function DiscoverPage() {
@@ -90,8 +91,8 @@ export default function DiscoverPage() {
           }}
         >
           {discoverCategories.map((item, idx) => (
-            <motion.div
-              key={idx}
+            <Link href={`/search/${item.id}`} key={idx} className="group">
+              <motion.div
               className="group relative overflow-hidden rounded-xl border border-border bg-card shadow hover:shadow-md transition-all"
               whileHover={{ scale: 1.03 }}
             >
@@ -110,6 +111,7 @@ export default function DiscoverPage() {
                 <p className="text-sm text-muted-foreground">Discover more</p>
               </div>
             </motion.div>
+            </Link>
           ))}
         </motion.div>
       )}

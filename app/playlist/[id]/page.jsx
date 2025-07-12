@@ -1,25 +1,27 @@
-import { notFound } from "next/navigation";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const dummyPlaylists = [
-  {
-    id: "chill-beats",
-    title: "Chill Beats",
-    creator: "Nova",
-    cover: "/MusicBannerImage.jpg",
-    songs: [
-      { title: "Track 1", artist: "X" },
-      { title: "Track 2", artist: "Y" },
-    ],
-  },
-  // more playlists...
-];
-
 export default function PlaylistDetailPage({ params }) {
-  const playlist = dummyPlaylists.find((p) => p.id === params.id);
+  const [playlist, setPlaylist] = useState(null);
+  const router = useRouter();
 
-  if (!playlist) return notFound();
+  useEffect(() => {
+    const stored = localStorage.getItem("selectedPlaylist");
+    if (stored) {
+      setPlaylist(JSON.parse(stored));
+    } else {
+      // If user refreshes page and localStorage is empty
+      router.replace("/playlists"); // Redirect to fallback page
+    }
+  }, [router]);
+
+  if (!playlist) {
+    return <div className="text-center py-10">Loading playlist...</div>;
+  }
 
   return (
     <div className="max-w-4xl mx-auto w-full px-6 py-8 space-y-6">
@@ -34,22 +36,26 @@ export default function PlaylistDetailPage({ params }) {
         <p className="text-muted-foreground">By {playlist.creator}</p>
       </div>
 
-      <ul className="space-y-2">
-        {playlist.songs.map((song, i) => (
-          <li
-            key={i}
-            className="flex items-center justify-between border border-border p-3 rounded-lg bg-card"
-          >
-            <div>
-              <p className="font-medium">{song.title}</p>
-              <p className="text-sm text-muted-foreground">{song.artist}</p>
-            </div>
-            <Button variant="outline" size="icon">
-              <Play className="h-4 w-4" />
-            </Button>
-          </li>
-        ))}
-      </ul>
+      {playlist.songs?.length > 0 ? (
+        <ul className="space-y-2">
+          {playlist.songs.map((song, i) => (
+            <li
+              key={i}
+              className="flex items-center justify-between border border-border p-3 rounded-lg bg-card"
+            >
+              <div>
+                <p className="font-medium">{song.title}</p>
+                <p className="text-sm text-muted-foreground">{song.artist}</p>
+              </div>
+              <Button variant="outline" size="icon">
+                <Play className="h-4 w-4" />
+              </Button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-muted-foreground">No songs found in this playlist.</p>
+      )}
     </div>
   );
 }

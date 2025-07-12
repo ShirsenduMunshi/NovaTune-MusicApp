@@ -1,19 +1,25 @@
-import { notFound } from "next/navigation";
+"use client";
 
-export default async function SongDetailPage({ params, searchParams }) {
-  const Params = await params;
-  const ParamsId = await Params.id;
-  const SearchParams = await searchParams;
-  const song = {
-    id: ParamsId,
-    title: SearchParams.title,
-    artist: SearchParams.artist,
-    banner: SearchParams.banner,
-    description: SearchParams.description,
-    audio: SearchParams.audio,
-  };
-    // If any required field is missing
-  if (!song.title || !song.audio || !song.banner) return notFound();
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
+export default function SongDetailPage({ params }) {
+  const [song, setSong] = useState(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const stored = localStorage.getItem("selectedSong");
+    if (stored) {
+      setSong(JSON.parse(stored));
+    } else {
+      // Handle refresh fallback
+      router.replace("/"); // Or navigate to a safe default page
+    }
+  }, [router]);
+
+  if (!song) {
+    return <div className="text-center py-10">Loading song...</div>;
+  }
 
   return (
     <div className="max-w-4xl mx-auto w-full px-6 py-8 space-y-6">
@@ -29,6 +35,10 @@ export default async function SongDetailPage({ params, searchParams }) {
         <p className="text-sm text-muted-foreground">{song.description}</p>
       </div>
 
+      <audio controls className="w-full mt-4 rounded-lg">
+        <source src={song.audio} type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
     </div>
   );
 }

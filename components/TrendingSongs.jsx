@@ -1,9 +1,10 @@
 "use client";
+
 import { useRef } from "react";
 import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const trendingSongs = [
   {
@@ -67,16 +68,21 @@ const trendingSongs = [
     banner: "/MusicBannerImage.jpg",
   },
 ];
-
 export default function TrendingSongs() {
   const scrollRef = useRef(null);
+  const router = useRouter();
 
   const scroll = (direction) => {
-    const { current } = scrollRef;
-    if (current) {
-      const scrollAmount = 300;
-      current.scrollBy({ left: direction === "left" ? -scrollAmount : scrollAmount, behavior: "smooth" });
-    }
+    if (!scrollRef.current) return;
+    scrollRef.current.scrollBy({
+      left: direction === "left" ? -300 : 300,
+      behavior: "smooth",
+    });
+  };
+
+  const handleSongClick = (song) => {
+    localStorage.setItem("selectedSong", JSON.stringify(song));
+    router.push(`/song/${song.id}`);
   };
 
   return (
@@ -86,7 +92,6 @@ export default function TrendingSongs() {
       </div>
 
       <div className="relative">
-        {/* Scroll Buttons */}
         <Button
           size="icon"
           variant="ghost"
@@ -104,46 +109,33 @@ export default function TrendingSongs() {
           <FaChevronRight className="w-5 h-5" />
         </Button>
 
-        {/* Songs Row */}
         <div
           ref={scrollRef}
           className="flex gap-4 overflow-x-auto no-scrollbar pb-2 scroll-smooth"
         >
-          {trendingSongs.map((song, index) => (
-            <Link
-              key={index}
-              href={{
-                pathname: `/song/${song.id}`,
-                query: {
-                  title: song.title,
-                  artist: song.artist,
-                  banner: song.banner,
-                  description: "A beautiful trending track",
-                  audio: "/sample.mp3",
-                },
-              }}
+          {trendingSongs.map((song) => (
+            <div
+              key={song.id}
+              onClick={() => handleSongClick(song)}
+              className="cursor-pointer relative w-40 min-w-[160px] rounded-lg overflow-hidden bg-card shadow-md hover:scale-105 transition-transform duration-300"
             >
-              <div
-                className="relative w-40 min-w-[160px] rounded-lg overflow-hidden bg-card shadow-md hover:scale-105 transition-transform duration-300"
-              >
-                <img
-                  src={song.banner}
-                  alt={song.title}
-                  className="w-full h-40 object-cover"
-                />
-                <div className="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
-                  <Button variant="secondary" size="icon">
-                    <Play className="w-5 h-5" />
-                  </Button>
-                </div>
-                <div className="p-2">
-                  <h3 className="text-sm font-medium truncate">{song.title}</h3>
-                  <p className="text-xs text-muted-foreground truncate">
-                    {song.artist}
-                  </p>
-                </div>
+              <img
+                src={song.banner}
+                alt={song.title}
+                className="w-full h-40 object-cover"
+              />
+              <div className="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+                <Button variant="secondary" size="icon">
+                  <Play className="w-5 h-5" />
+                </Button>
               </div>
-            </Link>
+              <div className="p-2">
+                <h3 className="text-sm font-medium truncate">{song.title}</h3>
+                <p className="text-xs text-muted-foreground truncate">
+                  {song.artist}
+                </p>
+              </div>
+            </div>
           ))}
         </div>
       </div>
