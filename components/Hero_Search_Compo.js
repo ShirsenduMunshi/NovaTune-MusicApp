@@ -2,8 +2,23 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function HeroSection() {
+  const [search, setSearch] = useState("");
+  const router = useRouter();
+
+  const handleSearch = () => {
+    if (search.trim() !== "") {
+      router.push(`/search/${encodeURIComponent(search.trim())}`);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") handleSearch();
+  };
+
   return (
     <section className="w-full px-4 py-12 md:py-20 bg-[#1447e633] rounded-xl">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-10">
@@ -21,9 +36,12 @@ export default function HeroSection() {
             <Input
               type="text"
               placeholder="Search for songs, artists, or albums..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={handleKeyDown}
               className="flex-1"
             />
-            <Button variant="default" className="mr-5">Search</Button>
+            <Button variant="default" onClick={handleSearch} className="mr-5">Search</Button>
           </div>
 
           {/* Buttons */}
