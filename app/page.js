@@ -7,7 +7,6 @@ import { FaAnglesRight } from "react-icons/fa6";
 import { Separator } from "@/components/ui/separator";
 import TrendingSongs from "@/components/TrendingSongs";
 import PopularArtists from "@/components/PopularArtists";
-import MusicPlayer from "@/components/MusicPlayer";
 
 export default function Home() {
   return (
