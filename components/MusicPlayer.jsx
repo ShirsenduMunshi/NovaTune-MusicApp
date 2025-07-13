@@ -69,6 +69,14 @@ export default function MusicPlayer() {
       audio.load();
       audio.play();
       setIsPlaying(true);
+
+      // ✅ Save currentSong to localStorage
+      try {
+        console.log("Saving current song to localStorage:", currentSong);
+        localStorage.setItem("recentlyPlayed", JSON.stringify(currentSong));
+      } catch (e) {
+        console.error("Failed to save song:", e);
+      }
     }
   }, [currentSong]);
 
@@ -115,25 +123,25 @@ export default function MusicPlayer() {
   };
 
   const handleDownload = async () => {
-  if (!src) return;
+    if (!src) return;
 
-  try {
-    const response = await fetch(src);
-    const blob = await response.blob();
-    const blobUrl = window.URL.createObjectURL(blob);
+    try {
+      const response = await fetch(src);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
 
-    const link = document.createElement("a");
-    link.href = blobUrl;
-    link.download = `${title}.mp4`; // Use .mp4 if it's Saavn, else use .mp3
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(blobUrl);
-  } catch (error) {
-    console.error("Download failed:", error);
-    alert("Download failed. Please try again.");
-  }
-};
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = `${title}.mp4`; // Use .mp4 if it's Saavn, else use .mp3
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Download failed:", error);
+      alert("Download failed. Please try again.");
+    }
+  };
 
 
   if (!currentSong) return null;

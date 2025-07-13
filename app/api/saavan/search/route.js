@@ -1,7 +1,6 @@
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get("query") || "top music";
-  const limit = searchParams.get("limit") || 8;
 
   try {
     const res = await fetch(`https://saavn.dev/api/search/songs?query=${encodeURIComponent(query)}`);

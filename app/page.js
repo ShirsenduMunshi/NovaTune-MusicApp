@@ -7,6 +7,7 @@ import { FaAnglesRight } from "react-icons/fa6";
 import { Separator } from "@/components/ui/separator";
 import TrendingSongs from "@/components/TrendingSongs";
 import PopularArtists from "@/components/PopularArtists";
+import SuggestedSongs from "@/components/SuggestedSongs";
 
 export default function Home() {
   return (
@@ -22,9 +23,7 @@ export default function Home() {
           </SheetTrigger>
           <SheetContent side="left" className="w-[90%] p-4">
             <h2 className="text-lg font-semibold mb-3">Suggested Music</h2>
-            <p className="text-sm text-muted-foreground">
-              No data available yet.
-            </p>
+            <SuggestedSongs />
           </SheetContent>
         </Sheet>
       </div>
@@ -35,7 +34,7 @@ export default function Home() {
         {/* Desktop Sidebar */}
         <aside className="w-[25%] rounded-xl border border-border p-4 hidden md:block">
           <h2 className="text-lg font-semibold mb-3">Suggested Music</h2>
-          No data available yet.
+          <SuggestedSongs />
         </aside>
 
         {/* Main Content */}

@@ -164,12 +164,13 @@ export default function SearchPage() {
                 onClick={(e) => {
                   e.stopPropagation(); // Prevent card navigation
                   setCurrentSong({
+                    id: item.id,
                     title: item.name,
                     artist: primaryArtists,
-                    src:
-                      item.downloadUrl?.find((d) => d.quality === "320kbps")?.url ||
-                      item.url,
+                    src: item.downloadUrl?.find((d) => d.quality === "320kbps")?.url || item.url,
                     cover: item.image?.[2]?.url,
+                    artistId: item.artists?.primary?.[0]?.id || null,  // ✅ save artist ID for suggestions
+                    fullItem: item  // optionally save the whole object if needed
                   });
                 }}
                 className="absolute bottom-4 right-4 group-hover:scale-105 transition"
