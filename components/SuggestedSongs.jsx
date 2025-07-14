@@ -53,7 +53,7 @@ export default function SuggestedSongs() {
   if (!artistId || songs.length === 0) return null;
 
   return (
-    <div className="space-y-2 min-h-full">
+    <div className="space-y-2 min-h-[1000px]">
       <div className="overflow-y-auto pr-1 space-y-2">
         {loading ? (
           Array.from({ length: 4 }).map((_, i) => (
