@@ -4,13 +4,12 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { ModeToggle } from "./ModeToggle";
-import { Separator } from "./ui/separator";
 
 const navLinks = [
     { name: "Home", href: "/" },
     { name: "Discover", href: "/discover" },
-    { name: "Playlists", href: "/playlists" },
-    { name: "Galaxy", href: "/galaxy" },
+    // { name: "Playlists", href: "/playlists" },
+    // { name: "Galaxy", href: "/galaxy" },
 ];
 
 export default function Navbar() {
@@ -32,7 +31,7 @@ export default function Navbar() {
     }, [darkMode]);
 
     return (
-        <nav className="w-full px-4 py-2 flex items-center justify-between border-b border-border bg-background/80 backdrop-blur z-10">
+        <nav className="w-full sticky top-0 left-0 px-4 py-2 flex items-center justify-between border-b border-border bg-background/80 backdrop-blur z-10">
             <div className="flex items-center gap-2">
                 <Link href="/" className="flex items-center">
                     <span className="text-2xl font-bold text-foreground tracking-wide flex items-center justify-center">
