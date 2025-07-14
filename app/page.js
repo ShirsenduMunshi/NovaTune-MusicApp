@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import TrendingSongs from "@/components/TrendingSongs";
 import PopularArtists from "@/components/PopularArtists";
 import SuggestedSongs from "@/components/SuggestedSongs";
+import DynamicMusicSlider from "@/components/DynamicMusicSlider";
 
 export default function Home() {
   return (
@@ -44,6 +45,29 @@ export default function Home() {
           <TrendingSongs />
           <Separator />
           <PopularArtists />
+          <Separator />
+          <DynamicMusicSlider title="🎬 Bollywood Hits" query="bollywood top hits"/>
+          <Separator />
+          <DynamicMusicSlider
+          title="💔 Heart Broke Collection"
+          query="sad hindi breakup songs"
+        />
+          <Separator />
+           <DynamicMusicSlider
+          title="🎞 60's Bollywood Classics"
+          query="60s bollywood hits"
+        />
+          <Separator />
+          <DynamicMusicSlider
+          title="🎥 90's Bollywood Nostalgia"
+          query="90s bollywood hit songs"
+        />
+          <Separator />
+          <DynamicMusicSlider
+          title="💖 Ever Green English Romantic"
+          query="evergreen english romantic songs"
+        />
+          <Separator />
         </section>
       </div>
     </main>
