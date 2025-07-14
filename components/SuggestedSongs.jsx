@@ -151,7 +151,7 @@ export default function SuggestedSongs() {
 
   return (
     <div className="space-y-2 min-h-full">
-      <div className="max-h-[900px] overflow-y-auto pr-1 space-y-2">
+      <div className="overflow-y-auto pr-1 space-y-2">
         {loading ? (
           Array.from({ length: 4 }).map((_, i) => (
             <Skeleton key={i} className="h-12 w-full rounded" />
