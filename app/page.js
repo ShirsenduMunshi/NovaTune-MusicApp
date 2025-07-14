@@ -50,7 +50,7 @@ export default function Home() {
           <Separator />
           <DynamicMusicSlider
           title="💔 Heart Broke Collection"
-          query="sad hindi breakup songs"
+          query="arijit singh sad songs"
         />
           <Separator />
            <DynamicMusicSlider

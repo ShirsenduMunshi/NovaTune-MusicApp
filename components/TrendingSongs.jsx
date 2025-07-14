@@ -384,7 +384,7 @@ export default function TrendingSongs() {
   };
 
   return (
-    <section className="mt-6">
+    <section className="mt-6 max-w-[90%] mx-auto">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold">🔥 Trending Songs</h2>
       </div>
